@@ -663,7 +663,7 @@ def pack_yser_file(ori_stm, out_txt_name, out_ybn_name, codepage):
             code = int(match[0])
             buf.extend(struct.pack('<I', code))
             buf.extend(encode_str(match[1], codepage))
-            print(code, match[1])
+            logln(code, match[1])
             buf.append(0)
         with open(out_ybn_name, 'wb') as f:
             f.write(buf)
@@ -1825,7 +1825,7 @@ def pack_ypf(output_ypf, input_dir, version, codepage):
             return False
         length_encoded = index_of_byte(
             get_length_swapping_table(version), len(encoded_name))
-        full_buf.append(length_encoded & 0xFF)
+        full_buf.append((~length_encoded) & 0xFF)
         enc_name = bytearray(encoded_name)
         key = get_filename_encryption_key(version)
         for i in range(len(enc_name)):
